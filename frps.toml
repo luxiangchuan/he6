@@ -1,7 +1,7 @@
 bindAddr = "0.0.0.0"
-bindPort = 7000
+bindPort = 8000
 #kcpBindPort = 7000
-quicBindPort = 7000
+quicBindPort = 8000
 
 vhostHTTPPort = 80
 vhostHTTPSPort = 443
