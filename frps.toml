@@ -27,7 +27,7 @@ auth.method = "token"
 auth.token = "cb6246e7-3316-49ca-8202-4a3526834478"
 
 allowPorts = [
-  { start = 5000, end = 10000 }
+  { start = 17000, end = 17002 }
 ]
 
 maxPortsPerClient = 3
