@@ -1,13 +1,27 @@
-##
+FROM alpine:3.8
+LABEL maintainer="luxiangchuan <luxiangchuan@gmail.com>"
 
-FROM alpine:latest
+ENV VERSION 0.58.0
+ENV TZ=Asia/Shanghai
+WORKDIR /
 
-WORKDIR /root
-COPY xf.sh /root/xf.sh
+RUN apk add --no-cache tzdata \
+    && ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && echo ${TZ} > /etc/timezone
 
-RUN set -ex \
-    && apk add --no-cache tzdata openssl ca-certificates \
-    && mkdir -p /etc/v2ray /usr/local/share/v2ray /var/log/v2ray \
-    && chmod +x /root/xf.sh
+RUN if [ "$(uname -m)" = "x86_64" ]; then export PLATFORM=amd64 ; \
+	elif [ "$(uname -m)" = "aarch64" ]; then export PLATFORM=arm64 ; \
+	elif [ "$(uname -m)" = "armv7" ]; then export PLATFORM=arm ; \
+	elif [ "$(uname -m)" = "armv7l" ]; then export PLATFORM=arm ; \
+	elif [ "$(uname -m)" = "armhf" ]; then export PLATFORM=arm ; fi \
+	&& wget --no-check-certificate https://github.com/fatedier/frp/releases/download/v${VERSION}/frp_${VERSION}_linux_${PLATFORM}.tar.gz \
+	&& tar xzf frp_${VERSION}_linux_${PLATFORM}.tar.gz \
+	&& cd frp_${VERSION}_linux_${PLATFORM} \
+	&& mkdir /frp \
+	&& mv frps frps.toml /frp \
+	&& cd .. \
+	&& rm -rf *.tar.gz frp_${VERSION}_linux_${PLATFORM}
 
-CMD [ "/root/xf.sh" ]
+VOLUME /frp
+
+CMD /frp/frps -c /frp/frps.toml

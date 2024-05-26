@@ -1,0 +1,35 @@
+bindAddr = "0.0.0.0"
+bindPort = 7000
+#kcpBindPort = 7000
+quicBindPort = 7000
+
+vhostHTTPPort = 80
+vhostHTTPSPort = 443
+
+transport.maxPoolCount = 2000
+transport.tcpMux = true
+transport.tcpMuxKeepaliveInterval = 60
+transport.tcpKeepalive = 7200
+transport.tls.force = false
+
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+webServer.user = "eu"
+webServer.password = "cb6246e7"
+webServer.pprofEnable = false
+
+log.to = "./frps.log"
+log.level = "info"
+log.maxDays = 3
+log.disablePrintColor = false
+
+auth.method = "token"
+auth.token = "cb6246e7-3316-49ca-8202-4a3526834478"
+
+allowPorts = [
+  { start = 5000, end = 10000 }
+]
+
+maxPortsPerClient = 3
+udpPacketSize = 1500
+natholeAnalysisDataReserveHours = 168
