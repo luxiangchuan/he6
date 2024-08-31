@@ -7,15 +7,20 @@ import { connect } from 'cloudflare:sockets';
 
 // How to generate your own UUID:
 // https://www.uuidgenerator.net/
-let userID = '89b3cbba-e6ac-485a-9481-976a0415eab9';
+let userID = '0fdbedf1-8531-4890-901f-ce14ae3391a7';
 
 // https://www.nslookup.io/domains/bpb.yousef.isegaro.com/dns-records/
-const proxyIPs= ['bpb.yousef.isegaro.com'];
+const proxyIPs= ['tp.whohe.eu.org']; // bpb.yousef.isegaro.com
 
 const defaultHttpPorts = ['80', '8080', '2052', '2082', '2086', '2095', '8880'];
 const defaultHttpsPorts = ['443', '8443', '2053', '2083', '2087', '2096'];
 
 let proxyIP = proxyIPs[Math.floor(Math.random() * proxyIPs.length)];
+
+function isValidIP(ip) {
+    var reg = /^[\s\S]*$/;
+    return reg.test(ip);
+}
 
 let dohURL = 'https://cloudflare-dns.com/dns-query';
 
@@ -225,6 +230,15 @@ export default {
                         return await fetch(request);
                 }
             } else {
+		const path = new URL(request.url);
+		const tmp_ip = path.searchParams.get('ip');
+		const tmp_uuid = path.searchParams.get('id');
+		if(isValidIP(tmp_ip)){
+			proxyIP=tmp_ip;
+		}
+		if (isValidUUID(tmp_uuid)){
+			userID = tmp_uuid;
+		}
                 return await vlessOverWSHandler(request);
             }
         } catch (err) {
